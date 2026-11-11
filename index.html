@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recibo Oficial | Gregório Borracharia e Auto Serviço LTDA.</title>
+
+  <!-- Tipografia Google e Ícones FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Estilos da Aplicação -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Biblioteca para Geração de PDF no Cliente -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- Barra Superior / Header Global -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-badge">
+        <i class="fa-solid fa-screwdriver-wrench"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">Gregório <span>AUTO SERVIÇO</span></h1>
+        <p class="brand-subtitle">Sistema Integrado de Emissão de Recibos Corporativos</p>
+      </div>
+    </div>
+
+    <!-- Barra de Ações Rápidas -->
+    <div class="header-actions">
+      <button type="button" id="btn-novo" class="btn btn-secondary" title="Iniciar um novo recibo em branco">
+        <i class="fa-solid fa-rotate-left"></i> <span class="btn-text">Novo Recibo</span>
+      </button>
+      <button type="button" id="btn-imprimir" class="btn btn-secondary" title="Imprimir documento via navegador">
+        <i class="fa-solid fa-print"></i> <span class="btn-text">Imprimir</span>
+      </button>
+      <button type="button" id="btn-exportar-pdf" class="btn btn-primary" title="Baixar documento em formato PDF A4">
+        <i class="fa-solid fa-file-pdf"></i> <span class="btn-text">Baixar PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Barra de Alternância de Visualização no Mobile -->
+  <nav class="mobile-tabs" role="tablist">
+    <button type="button" id="tab-form-btn" class="tab-button active" role="tab" aria-selected="true">
+      <i class="fa-solid fa-pen-to-square"></i> Edição
+    </button>
+    <button type="button" id="tab-preview-btn" class="tab-button" role="tab" aria-selected="false">
+      <i class="fa-solid fa-file-lines"></i> Folha A4
+    </button>
+  </nav>
+
+  <!-- Layout Principal em Painéis -->
+  <main class="app-layout">
+
+    <!-- PAINEL ESQUERDO: ENTRADA E CONTROLE DE DADOS -->
+    <section id="form-container" class="panel form-panel">
+
+      <!-- Informações Fixas do Emissor -->
+      <aside class="emitter-card">
+        <div class="emitter-header">
+          <span class="emitter-tag"><i class="fa-solid fa-certificate"></i> Prestador Oficial Credenciado</span>
+          <span class="emitter-status">CNPJ Ativo</span>
+        </div>
+        <h2 class="emitter-name">Gregório Borracharia e Auto Serviço LTDA.</h2>
+        <div class="emitter-details-grid">
+          <div><strong>CNPJ:</strong> 22.338.423/0001-59</div>
+          <div><strong>IE:</strong> 196.981.557 | <strong>IM:</strong> 644143-2</div>
+          <div class="span-2"><strong>Endereço:</strong> Av. Poti Velho, 5380 - Santa Maria da Codipi - Teresina / PI</div>
+          <div><strong>WhatsApp:</strong> (86) 98178-5439</div>
+          <div><strong>E-mail:</strong> borrachariagregorio@gmail.com</div>
+          <div class="span-2"><strong>Representante:</strong> Franklin Pereira da Silva • CPF: 553.714.003-97</div>
+        </div>
+      </aside>
+
+      <form id="receipt-input-form" autocomplete="off" onsubmit="event.preventDefault();">
+
+        <!-- 1. Dados do Tomador / Cliente -->
+        <fieldset class="form-section">
+          <legend><i class="fa-solid fa-user-check"></i> 1. Dados do Tomador (Cliente / Pagador)</legend>
+          
+          <div class="form-row grid-2">
+            <div class="form-group span-2">
+              <label for="tomador-nome">Nome Completo / Razão Social do Cliente *</label>
+              <input type="text" id="tomador-nome" placeholder="Ex: Transportadora Santos & Filhos LTDA" required>
+            </div>
+
+            <div class="form-group">
+              <label for="tomador-documento">
+                CPF ou CNPJ *
+                <span class="field-hint">(Máscara automática)</span>
+              </label>
+              <input type="text" id="tomador-documento" placeholder="000.000.000-00 ou 00.000.000/0000-00" inputmode="numeric" maxlength="18" required>
+            </div>
+
+            <div class="form-group">
+              <label for="tomador-cidade">Cidade / UF</label>
+              <input type="text" id="tomador-cidade" placeholder="Ex: Teresina / PI" value="Teresina / PI">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 2. Serviços Prestados com Ordenação -->
+        <fieldset class="form-section">
+          <div class="section-top-bar">
+            <legend><i class="fa-solid fa-list-ol"></i> 2. Serviços Prestados</legend>
+            <button type="button" id="btn-novo-item" class="btn btn-sm btn-outline">
+              <i class="fa-solid fa-plus"></i> Adicionar Linha
+            </button>
+          </div>
+
+          <!-- Barra de Ordenação Dinâmica -->
+          <div class="sort-bar">
+            <span class="sort-label"><i class="fa-solid fa-arrow-down-up-across-line"></i> Reordenar:</span>
+            <div class="sort-actions">
+              <button type="button" id="btn-sort-az" class="btn btn-chip" title="Ordenar serviços alfabeticamente pela descrição">
+                <i class="fa-solid fa-arrow-down-a-z"></i> De A-Z
+              </button>
+              <button type="button" id="btn-sort-valor" class="btn btn-chip" title="Ordenar serviços por valor unitário">
+                <i class="fa-solid fa-arrow-up-wide-short"></i> Por Valor
+              </button>
+            </div>
+          </div>
+
+          <!-- Cabeçalho das Colunas para Desktop -->
+          <div class="desktop-items-header">
+            <span class="col-desc">Descrição do Serviço</span>
+            <span class="col-qtd">Quant.</span>
+            <span class="col-unit">Valor Unit. (R$)</span>
+            <span class="col-total">Subtotal (R$)</span>
+            <span class="col-del">Ação</span>
+          </div>
+
+          <!-- Lista de Serviços -->
+          <div id="items-wrapper" class="items-wrapper">
+            <!-- Linhas de serviços geradas dinamicamente via JS -->
+          </div>
+
+          <!-- Totalizador do Formulário -->
+          <div class="total-bar-card">
+            <span class="total-bar-label">Total Geral Calculado:</span>
+            <strong id="form-total-val" class="total-bar-value">R$ 0,00</strong>
+          </div>
+        </fieldset>
+
+        <!-- 3. Pagamento, Liquidação e Assinatura -->
+        <fieldset class="form-section">
+          <legend><i class="fa-solid fa-file-signature"></i> 3. Dados de Emissão & Pagamento</legend>
+
+          <div class="form-row grid-3">
+            <div class="form-group">
+              <label for="emissao-numero">Nº do Recibo</label>
+              <input type="text" id="emissao-numero" placeholder="Ex: 001/2026">
+            </div>
+
+            <div class="form-group">
+              <label for="emissao-forma">Forma de Pagamento</label>
+              <select id="emissao-forma">
+                <option value="Pix">Pix</option>
+                <option value="Dinheiro em Espécie">Dinheiro em Espécie</option>
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Cartão de Débito">Cartão de Débito</option>
+                <option value="Transferência Bancária">Transferência Bancária</option>
+                <option value="Boleto Bancário">Boleto Bancário</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="emissao-data">Data de Emissão</label>
+              <input type="date" id="emissao-data">
+            </div>
+
+            <div class="form-group" id="group-pix-key">
+              <label for="emissao-pix-chave">Chave Pix</label>
+              <input type="text" id="emissao-pix-chave" value="22.338.423/0001-59">
+            </div>
+
+            <div class="form-group" id="group-pix-holder">
+              <label for="emissao-pix-titular">Titular Pix / Instituição</label>
+              <input type="text" id="emissao-pix-titular" value="Gregório Borracharia e Auto Serviço">
+            </div>
+
+            <div class="form-group">
+              <label for="emissao-cidade">Cidade de Emissão</label>
+              <input type="text" id="emissao-cidade" value="Teresina - PI">
+            </div>
+          </div>
+
+          <!-- Assinatura / Rubrica Digital -->
+          <div class="signature-upload-wrapper">
+            <label for="input-assinatura-img">
+              Rubrica ou Assinatura Digital (Opcional - imagem transparente em PNG ou JPG):
+            </label>
+            <div class="signature-upload-row">
+              <input type="file" id="input-assinatura-img" accept="image/*">
+              <button type="button" id="btn-limpar-assinatura" class="btn btn-sm btn-danger hidden">
+                <i class="fa-solid fa-trash-can"></i> Remover Imagem
+              </button>
+            </div>
+          </div>
+        </fieldset>
+
+      </form>
+    </section>
+
+    <!-- PAINEL DIREITO: FOLHA A4 AO VIVO (PRÉ-VISUALIZAÇÃO / EXPORTAÇÃO) -->
+    <section id="preview-container" class="panel preview-panel">
+      <div class="a4-viewport">
+        <article id="receipt-document" class="a4-sheet">
+
+          <!-- 1. Cabeçalho Oficial da Empresa -->
+          <header class="doc-header">
+            <h2 class="doc-company-title">GREGÓRIO BORRACHARIA E AUTO SERVIÇO LTDA.</h2>
+            <p class="doc-company-activity">SERVIÇOS AUTOMOTIVOS • BORRACHARIA ESPECIALIZADA • MANUTENÇÃO PREVENTIVA</p>
+            <div class="doc-company-meta">
+              <span><strong>CNPJ:</strong> 22.338.423/0001-59</span>
+              <span><strong>Inscrição Estadual:</strong> 196.981.557</span>
+              <span><strong>Inscrição Municipal:</strong> 644143-2</span>
+            </div>
+            <div class="doc-company-meta">
+              <span>Avenida Poti Velho, 5380 - Santa Maria da Codipi - Teresina / PI</span>
+            </div>
+            <div class="doc-company-meta">
+              <span><strong>Contato:</strong> (86) 98178-5439</span>
+              <span><strong>E-mail:</strong> borrachariagregorio@gmail.com</span>
+            </div>
+          </header>
+
+          <hr class="doc-separator-bold">
+
+          <!-- 2. Identificação do Recibo -->
+          <div class="doc-title-bar">
+            <h3 class="doc-title-text">RECIBO DE PRESTAÇÃO DE SERVIÇOS</h3>
+            <span class="doc-number-badge" id="view-doc-numero">Nº: 001/2026</span>
+          </div>
+
+          <!-- 3. Parágrafo Declaratório Jurídico Integrado com o Tomador -->
+          <div class="doc-statement-paragraph">
+            <p>
+              Eu, <strong>Franklin Pereira da Silva</strong>, inscrito no CPF sob nº <strong>553.714.003-97</strong>, 
+              representante legal da empresa <strong>GREGÓRIO BORRACHARIA E AUTO SERVIÇO LTDA.</strong>, inscrita no CNPJ sob nº <strong>22.338.423/0001-59</strong>, 
+              declaro para os devidos fins que <strong>RECEBI</strong> da empresa/pessoa <strong id="view-tomador-nome" class="doc-highlight-inline">[NOME DO TOMADOR]</strong>, 
+              inscrita no CPF/CNPJ sob nº <strong id="view-tomador-doc" class="doc-highlight-inline">[000.000.000-00]</strong>, 
+              residente/sediada em <span id="view-tomador-cidade">Teresina / PI</span>, 
+              a quantia líquida e certa de <strong id="view-total-numerico" class="doc-currency-strong">R$ 0,00</strong> 
+              (<em id="view-total-extenso">zero real</em>), 
+              referente à prestação dos serviços especializados descritos a seguir:
+            </p>
+          </div>
+
+          <!-- 4. Tabela de Discriminação de Serviços -->
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th style="width: 6%; text-align: center;">Item</th>
+                <th style="width: 52%; text-align: left;">Descrição dos Serviços Prestados</th>
+                <th style="width: 12%; text-align: center;">Quant.</th>
+                <th style="width: 15%; text-align: right;">Unitário (R$)</th>
+                <th style="width: 15%; text-align: right;">Subtotal (R$)</th>
+              </tr>
+            </thead>
+            <tbody id="view-table-body">
+              <!-- Itens injetados via JS -->
+            </tbody>
+            <tfoot>
+              <tr class="doc-table-foot">
+                <td colspan="4" style="text-align: right;">VALOR TOTAL DO RECIBO:</td>
+                <td style="text-align: right;" id="view-table-total-val">R$ 0,00</td>
+              </tr>
+            </tfoot>
+          </table>
+
+          <!-- 5. Dados da Operação Financeira -->
+          <div class="doc-payment-card">
+            <div class="doc-payment-headline"><i class="fa-solid fa-coins"></i> Detalhes da Liquidação / Pagamento:</div>
+            <div class="doc-payment-grid">
+              <div><strong>Forma de Pagamento:</strong> <span id="view-pgto-metodo">Pix</span></div>
+              <div id="view-box-pix-chave"><strong>Chave Pix:</strong> <span id="view-pgto-chave">22.338.423/0001-59</span></div>
+              <div id="view-box-pix-titular"><strong>Favorecido:</strong> <span id="view-pgto-titular">Gregório Borracharia e Auto Serviço</span></div>
+            </div>
+          </div>
+
+          <!-- 6. Rodapé com Datação e Área de Assinatura Calibrada -->
+          <footer class="doc-footer">
+            <p class="doc-location-date" id="view-data-localidade">
+              Teresina - PI, 11 de Novembro de 2026.
+            </p>
+
+            <!-- Área de Assinatura com 80px de respiro vertical para imagem ou caneta física -->
+            <div class="signature-container">
+              <div class="signature-canvas-zone">
+                <img id="view-signature-img" src="" alt="Assinatura Digital" class="hidden">
+              </div>
+              <div class="signature-divider"></div>
+              <div class="signature-label-name">Franklin Pereira da Silva</div>
+              <div class="signature-label-role">Representante Legal • CPF: 553.714.003-97</div>
+              <div class="signature-label-corp">Gregório Borracharia e Auto Serviço LTDA.</div>
+            </div>
+          </footer>
+
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Script da Aplicação -->
+  <script src="script.js"></script>
+</body>
+</html>
