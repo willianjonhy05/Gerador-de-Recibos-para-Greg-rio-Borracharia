@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,74 @@
   <!-- Tipografia Google e Ícones FontAwesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Estilos da Aplicação -->
   <link rel="stylesheet" href="styles.css">
 
+  <meta name="author" content="Johny William Pereira de Sousa">
+  <meta name="title" content="Gerador de Recibos | Gregório Borracharia e Auto Serviço">
+  <meta name="description"
+    content="Emissão rápida e profissional de recibos de prestação de serviços com cálculos automáticos e exportação para PDF da Gregório Borracharia e Auto Serviço.">
+  <meta name="keywords"
+    content="recibo de servico, gerador de recibo pdf, gregorio borracharia, borracharia teresina, auto servico santa maria da codipi, emissao de recibo">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0c2036">
+  <link rel="icon" type="image/x-icon" href="https://gregorio.vps7985.panel.icontainer.cloud/img/logo_reformada.png">
+
+  <!-- Open Graph / Facebook & WhatsApp -->
+  <meta property="og:type" content="website">
+  <!-- <meta property="og:url" content="https://seudominio.com.br/">-->
+  <meta property="og:title" content="Gerador de Recibos | Gregório Borracharia e Auto Serviço">
+  <meta property="og:description"
+    content="Emita e baixe recibos de serviços em PDF com cálculos instantâneos e layout formatado para impressão.">
+  <meta property="og:image"
+    content="https://gregorio.vps7985.panel.icontainer.cloud/img/thumbnail_borracharia_gregorio.png">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Gregório Borracharia e Auto Serviço">
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- <meta name="twitter:url" content="https://seudominio.com.br/"> -->
+  <meta name="twitter:title" content="Gerador de Recibos | Gregório Borracharia e Auto Serviço">
+  <meta name="twitter:description" content="Emissão ágil e elegante de recibos de serviços automotivos em PDF.">
+  <meta name="twitter:image"
+    content="https://gregorio.vps7985.panel.icontainer.cloud/img/thumbnail_borracharia_gregorio.png">
+
+  <!-- Geolocalização & SEO Local (Teresina / PI) -->
+  <meta name="geo.region" content="BR-PI">
+  <meta name="geo.placename" content="Teresina">
+  <meta name="geo.position" content="-5.0118;-42.8025">
+  <meta name="ICBM" content="-5.0118, -42.8025">
+
+  <!-- Dados Estruturados (Schema.org / JSON-LD) para Negócio Local -->
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRepair",
+  "name": "Gregório Borracharia e Auto Serviço LTDA",
+  "image": "https://gregorio.vps7985.panel.icontainer.cloud/img/logo_borracharia_gregorio.png",
+  "telephone": "+5586981785439",
+  "email": "borrachariagregorio@gmail.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Avenida Poti Velho, 5380",
+    "addressLocality": "Teresina",
+    "addressRegion": "PI",
+    "postalCode": "64011-010",
+    "addressCountry": "BR"
+  },
+  "taxID": "22.338.423/0001-59"
+}
+</script>
+
   <!-- Biblioteca para Geração de PDF no Cliente -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
+
 <body>
 
   <!-- Barra Superior / Header Global -->
@@ -71,7 +131,8 @@
         <div class="emitter-details-grid">
           <div><strong>CNPJ:</strong> 22.338.423/0001-59</div>
           <div><strong>IE:</strong> 196.981.557 | <strong>IM:</strong> 644143-2</div>
-          <div class="span-2"><strong>Endereço:</strong> Av. Poti Velho, 5380 - Santa Maria da Codipi - Teresina / PI</div>
+          <div class="span-2"><strong>Endereço:</strong> Av. Poti Velho, 5380 - Santa Maria da Codipi - Teresina / PI
+          </div>
           <div><strong>WhatsApp:</strong> (86) 98178-5439</div>
           <div><strong>E-mail:</strong> borrachariagregorio@gmail.com</div>
           <div class="span-2"><strong>Representante:</strong> Franklin Pereira da Silva • CPF: 553.714.003-97</div>
@@ -83,7 +144,7 @@
         <!-- 1. Dados do Tomador / Cliente -->
         <fieldset class="form-section">
           <legend><i class="fa-solid fa-user-check"></i> 1. Dados do Tomador (Cliente / Pagador)</legend>
-          
+
           <div class="form-row grid-2">
             <div class="form-group span-2">
               <label for="tomador-nome">Nome Completo / Razão Social do Cliente *</label>
@@ -95,7 +156,8 @@
                 CPF ou CNPJ *
                 <span class="field-hint">(Máscara automática)</span>
               </label>
-              <input type="text" id="tomador-documento" placeholder="000.000.000-00 ou 00.000.000/0000-00" inputmode="numeric" maxlength="18" required>
+              <input type="text" id="tomador-documento" placeholder="000.000.000-00 ou 00.000.000/0000-00"
+                inputmode="numeric" maxlength="18" required>
             </div>
 
             <div class="form-group">
@@ -118,10 +180,12 @@
           <div class="sort-bar">
             <span class="sort-label"><i class="fa-solid fa-arrow-down-up-across-line"></i> Reordenar:</span>
             <div class="sort-actions">
-              <button type="button" id="btn-sort-az" class="btn btn-chip" title="Ordenar serviços alfabeticamente pela descrição">
+              <button type="button" id="btn-sort-az" class="btn btn-chip"
+                title="Ordenar serviços alfabeticamente pela descrição">
                 <i class="fa-solid fa-arrow-down-a-z"></i> De A-Z
               </button>
-              <button type="button" id="btn-sort-valor" class="btn btn-chip" title="Ordenar serviços por valor unitário">
+              <button type="button" id="btn-sort-valor" class="btn btn-chip"
+                title="Ordenar serviços por valor unitário">
                 <i class="fa-solid fa-arrow-up-wide-short"></i> Por Valor
               </button>
             </div>
@@ -242,13 +306,16 @@
           <!-- 3. Parágrafo Declaratório Jurídico Integrado com o Tomador -->
           <div class="doc-statement-paragraph">
             <p>
-              Eu, <strong>Franklin Pereira da Silva</strong>, inscrito no CPF sob nº <strong>553.714.003-97</strong>, 
-              representante legal da empresa <strong>GREGÓRIO BORRACHARIA E AUTO SERVIÇO LTDA.</strong>, inscrita no CNPJ sob nº <strong>22.338.423/0001-59</strong>, 
-              declaro para os devidos fins que <strong>RECEBI</strong> da empresa/pessoa <strong id="view-tomador-nome" class="doc-highlight-inline">[NOME DO TOMADOR]</strong>, 
-              inscrita no CPF/CNPJ sob nº <strong id="view-tomador-doc" class="doc-highlight-inline">[000.000.000-00]</strong>, 
-              residente/sediada em <span id="view-tomador-cidade">Teresina / PI</span>, 
-              a quantia líquida e certa de <strong id="view-total-numerico" class="doc-currency-strong">R$ 0,00</strong> 
-              (<em id="view-total-extenso">zero real</em>), 
+              Eu, <strong>Franklin Pereira da Silva</strong>, inscrito no CPF sob nº <strong>553.714.003-97</strong>,
+              representante legal da empresa <strong>GREGÓRIO BORRACHARIA E AUTO SERVIÇO LTDA.</strong>, inscrita no
+              CNPJ sob nº <strong>22.338.423/0001-59</strong>,
+              declaro para os devidos fins que <strong>RECEBI</strong> da empresa/pessoa <strong id="view-tomador-nome"
+                class="doc-highlight-inline">[NOME DO TOMADOR]</strong>,
+              inscrita no CPF/CNPJ sob nº <strong id="view-tomador-doc"
+                class="doc-highlight-inline">[000.000.000-00]</strong>,
+              residente/sediada em <span id="view-tomador-cidade">Teresina / PI</span>,
+              a quantia líquida e certa de <strong id="view-total-numerico" class="doc-currency-strong">R$ 0,00</strong>
+              (<em id="view-total-extenso">zero real</em>),
               referente à prestação dos serviços especializados descritos a seguir:
             </p>
           </div>
@@ -277,11 +344,14 @@
 
           <!-- 5. Dados da Operação Financeira -->
           <div class="doc-payment-card">
-            <div class="doc-payment-headline"><i class="fa-solid fa-coins"></i> Detalhes da Liquidação / Pagamento:</div>
+            <div class="doc-payment-headline"><i class="fa-solid fa-coins"></i> Detalhes da Liquidação / Pagamento:
+            </div>
             <div class="doc-payment-grid">
               <div><strong>Forma de Pagamento:</strong> <span id="view-pgto-metodo">Pix</span></div>
-              <div id="view-box-pix-chave"><strong>Chave Pix:</strong> <span id="view-pgto-chave">22.338.423/0001-59</span></div>
-              <div id="view-box-pix-titular"><strong>Favorecido:</strong> <span id="view-pgto-titular">Gregório Borracharia e Auto Serviço</span></div>
+              <div id="view-box-pix-chave"><strong>Chave Pix:</strong> <span
+                  id="view-pgto-chave">22.338.423/0001-59</span></div>
+              <div id="view-box-pix-titular"><strong>Favorecido:</strong> <span id="view-pgto-titular">Gregório
+                  Borracharia e Auto Serviço</span></div>
             </div>
           </div>
 
@@ -312,4 +382,5 @@
   <!-- Script da Aplicação -->
   <script src="script.js"></script>
 </body>
+
 </html>
